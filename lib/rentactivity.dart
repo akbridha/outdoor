@@ -33,20 +33,12 @@ class _rentactivityState extends State<rentactivity> {
         appBar: AppBar(
           title: Text("Prepare Your Stuff"),
           actions: [
-            // IconButton(
-            //     icon: Icon(Icons.login,
-            //         color: const Color(0xFF0000FF), size: 34.0),
-            //     onPressed: () {}),
             IconButton(
                 icon: Icon(Icons.replay_outlined,
                     color: Color.fromARGB(255, 1, 140, 158), size: 34.0),
                 onPressed: () {
                   ambilData();
                 }),
-            // IconButton(
-            //     icon: Icon(Icons.settings,
-            //         color: const Color(0xFF00FF00), size: 34.0),
-            //     onPressed: () {}),
           ],
           backgroundColor: Color.fromARGB(252, 7, 245, 206),
         ),
@@ -74,12 +66,25 @@ class _rentactivityState extends State<rentactivity> {
               height: MediaQuery.of(context).size.height * 0.8,
               child: Column(children: [
                 Container(
+                  //kotak atas cart
                   margin: EdgeInsets.fromLTRB(9, 4, 9, 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Color.fromARGB(255, 0, 221, 250).withOpacity(0.3)),
+                      color:
+                          Color.fromARGB(255, 229, 230, 230).withOpacity(0.6)),
                   height: 100,
                   width: MediaQuery.of(context).size.width,
+                  child: ListView.separated(
+                      itemBuilder: ((context, index) => Card(
+                            child: Text(cart[index]),
+                          )),
+                      separatorBuilder: (
+                        context,
+                        index,
+                      ) {
+                        return Divider();
+                      },
+                      itemCount: cart.length),
                 ),
                 Expanded(
                   //box tosca
@@ -99,6 +104,7 @@ class _rentactivityState extends State<rentactivity> {
                       children: [
                         Expanded(
                           child: ListView.separated(
+                              ////////////////////////////////////////////
                               itemBuilder: ((context, index) => Card(
                                     child: Row(
                                       children: [
@@ -166,6 +172,7 @@ class _rentactivityState extends State<rentactivity> {
                                                             .biaya_sewa);
                                                     print("ini isi cart " +
                                                         cart.toString());
+                                                    setState(() {});
                                                   },
                                                   child: const Text("Tambah"),
                                                 ),
