@@ -9,6 +9,7 @@ class adminlogin extends StatefulWidget {
   State<adminlogin> createState() => _adminloginState();
 }
 
+// ignore: camel_case_types
 class _adminloginState extends State<adminlogin> {
   TextEditingController controllerUN = TextEditingController();
   TextEditingController controllerPW = TextEditingController();
@@ -17,13 +18,13 @@ class _adminloginState extends State<adminlogin> {
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the adminlogin object that was created by
-        // the App.build method, and use it to set our appbar title.
+        // the App.build method, and use it to sset our appbar title.
         title: Text(widget.title),
       ),
       body: Container(
         //kotak wadah textfield
-        margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-        padding: EdgeInsets.all(20),
+        margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           image: const DecorationImage(
               image: AssetImage("assets/images/outdoor.jpg"),
@@ -34,8 +35,8 @@ class _adminloginState extends State<adminlogin> {
         height: MediaQuery.of(context).size.height * 0.9,
         child: SingleChildScrollView(
           child: Container(
-              margin: EdgeInsets.fromLTRB(40, 70, 40, 40),
-              padding: EdgeInsets.all(20),
+              margin: const EdgeInsets.fromLTRB(40, 70, 40, 40),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 // image: DecorationImage(
                 //     image: AssetImage("assets/images/outdoor.jpg"),
@@ -47,7 +48,7 @@ class _adminloginState extends State<adminlogin> {
               height: 400,
               child: Column(children: [
                 Container(
-                    margin: EdgeInsets.fromLTRB(30, 30, 30, 5),
+                    margin: const EdgeInsets.fromLTRB(30, 30, 30, 5),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -59,7 +60,7 @@ class _adminloginState extends State<adminlogin> {
                           ),
                         ])),
                 Container(
-                    margin: EdgeInsets.fromLTRB(30, 30, 30, 5),
+                    margin: const EdgeInsets.fromLTRB(30, 30, 30, 5),
                     child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -71,9 +72,8 @@ class _adminloginState extends State<adminlogin> {
                           ),
                         ])),
                 ElevatedButton(
-                    child: Text('Masuk'),
                     style: ElevatedButton.styleFrom(
-                      side: BorderSide(width: 100),
+                      side: const BorderSide(width: 100),
                     ),
                     onPressed: () {
                       // String username = controllerUN.text;
@@ -113,7 +113,8 @@ class _adminloginState extends State<adminlogin> {
                       //     iterasi++;
                       //   }
                       // }
-                    }),
+                    },
+                    child: const Text('Masuk')),
                 // Container(
                 //   // BUTTON DEV KOSONGKAN SHARED PREFERENCE
                 //   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -134,19 +135,19 @@ class _adminloginState extends State<adminlogin> {
                 //   ),
                 // ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                  margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                   child: SizedBox(
                     height: 30, //height of button
                     width: 360,
                     child: ElevatedButton(
                         // UNTUK CEK ISI SF
                         style: ElevatedButton.styleFrom(
-                          side: BorderSide(width: 80),
+                          side: const BorderSide(width: 80),
                           primary: Colors.grey[100], // background
-                          onPrimary:
-                              Color.fromARGB(255, 39, 54, 163), // foreground
+                          onPrimary: const Color.fromARGB(
+                              255, 39, 54, 163), // foreground
                         ),
-                        child: Text('Pelanggan'),
+                        child: const Text('Pelanggan'),
                         onPressed: () {
                           // AuthenticationService service =
                           //     AuthenticationService(FirebaseAuth.instance);
