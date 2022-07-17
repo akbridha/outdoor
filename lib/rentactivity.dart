@@ -159,9 +159,15 @@ class _rentactivityState extends State<rentactivity> {
                                               children: [
                                                 ElevatedButton(
                                                   onPressed: () {
-                                                    print(listbarang[index]);
+                                                    cart.add(listbarang[index]
+                                                            .nama_barang +
+                                                        "-> Rp" +
+                                                        listbarang[index]
+                                                            .biaya_sewa);
+                                                    print("ini isi cart " +
+                                                        cart.toString());
                                                   },
-                                                  child: Text("Tambah"),
+                                                  child: const Text("Tambah"),
                                                 ),
                                               ],
                                             ),
