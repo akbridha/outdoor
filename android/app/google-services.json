@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "615072854096",
+    "project_id": "outdoor-53765",
+    "storage_bucket": "outdoor-53765.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615072854096:android:37886583012a3cf286e155",
+        "android_client_info": {
+          "package_name": "com.example.outdoor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615072854096-3fh7a35fvqejjg6km5ou42445ei6t8lh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX8BCT-d8qiTnruqqzsyTmsRsXcEFwJ1c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615072854096-3fh7a35fvqejjg6km5ou42445ei6t8lh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
