@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:outdoor/auth_services.dart';
+import 'package:outdoor/rentactivity.dart';
 
 class adminlogin extends StatefulWidget {
-  const adminlogin({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const adminlogin({Key? key}) : super(key: key);
 
   @override
   State<adminlogin> createState() => _adminloginState();
@@ -19,7 +21,7 @@ class _adminloginState extends State<adminlogin> {
       appBar: AppBar(
         // Here we take the value from the adminlogin object that was created by
         // the App.build method, and use it to sset our appbar title.
-        title: Text(widget.title),
+        title: const Text("login"),
       ),
       body: Container(
         //kotak wadah textfield
@@ -76,64 +78,9 @@ class _adminloginState extends State<adminlogin> {
                       side: const BorderSide(width: 100),
                     ),
                     onPressed: () {
-                      // String username = controllerUN.text;
-                      // String pwd = controllerPW.text;
-                      // bool ulang = true;
-                      // int iterasi = 0;
-
-                      // // MENCEK USERNAME DI LIST SATU PERSATU====================
-                      // while (ulang) {
-                      //   print("Username yang dicari " + "'" + username + "'");
-                      //   print("check" + iterasi.toString());
-
-                      //   // UNTUK MEMBATASI PENGECEKAN SAMPAI LIST HABIS AGAR TIDAK ENDLESS LOOP
-                      //   if (iterasi >= data.length) {
-                      //     ulang = false;
-                      //     print("list yang dicek udah abis");
-                      //   } else {
-                      //     // MENCEK SATU PERSATU USERNAME YANG DIMASUKKAN
-                      //     if (data[iterasi].containsValue(username)) {
-                      //       print("Username ditemukan ");
-                      //       ulang = false;
-
-                      //       // MENCEK PASSWORD
-                      //       if (data[iterasi].containsValue(pwd)) {
-                      //         print("Username dan Password Benar");
-
-                      //         //MEMASUKKAN KE NAMA KE SHARED PREFERENCE
-
-                      //         getValuesFromMapSetSF(data[iterasi]);
-                      //       } else {
-                      //         print("Password Syalah");
-                      //       }
-                      //     } else {
-                      //       print("Username tidak ditemukan");
-                      //     }
-
-                      //     iterasi++;
-                      //   }
-                      // }
+                      masukPakaiGAkun();
                     },
                     child: const Text('Masuk')),
-                // Container(
-                //   // BUTTON DEV KOSONGKAN SHARED PREFERENCE
-                //   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                //   child: SizedBox(
-                //     height: 30, //height of button
-                //     width: 360,
-                //     child: ElevatedButton(
-                //         // UNTUK CEK ISI SF
-                //         style: ElevatedButton.styleFrom(
-                //           side: BorderSide(width: 80),
-                //           primary: Colors.grey[100], // background
-                //           onPrimary: Colors.white, // foreground
-                //         ),
-                //         child: Text('kosongkeun SF'),
-                //         onPressed: () {
-                //           // kosongkan();
-                //         }),
-                //   ),
-                // ),
                 Container(
                   margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
                   child: SizedBox(
@@ -173,5 +120,22 @@ class _adminloginState extends State<adminlogin> {
         ),
       ),
     );
+  }
+
+  void keBeranda() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return rentactivity();
+    }));
+  }
+
+  Future<void> masukPakaiGAkun() async {
+    AuthenticationService service =
+        await AuthenticationService(FirebaseAuth.instance);
+    if (service.signInGoogle() != null) {
+      keBeranda();
+      print("sukses");
+    } else {
+      print("Login gagal");
+    }
   }
 }

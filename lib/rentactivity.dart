@@ -1,7 +1,11 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:outdoor/adminlogin.dart';
 import 'package:outdoor/repository.dart';
+
+import 'auth_services.dart';
 
 class rentactivity extends StatefulWidget {
   const rentactivity({Key? key}) : super(key: key);
@@ -39,6 +43,11 @@ class _rentactivityState extends State<rentactivity> {
                 onPressed: () {
                   ambilData();
                 }),
+            IconButton(
+                onPressed: () {
+                  keluarAkun();
+                },
+                icon: Icon(Icons.logout_outlined))
           ],
           backgroundColor: Color.fromARGB(252, 7, 245, 206),
         ),
@@ -66,23 +75,35 @@ class _rentactivityState extends State<rentactivity> {
               height: MediaQuery.of(context).size.height * 0.8,
               child: Column(children: [
                 Container(
-                  //kotak atas cart
+                  ////////////////////////////////kotak atas cart
                   margin: EdgeInsets.fromLTRB(9, 4, 9, 10),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color:
-                          Color.fromARGB(255, 229, 230, 230).withOpacity(0.6)),
-                  height: 100,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  height: 250,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.separated(
                       itemBuilder: ((context, index) => Card(
-                            child: Text(cart[index]),
+                            child: ListTile(
+                              leading: Icon(Icons.add_task_rounded),
+                              title: Text(
+                                  (index + 1).toString() + "." + cart[index]),
+                              onLongPress: () {
+                                setState(() {
+                                  cart.removeAt(index);
+                                });
+                              },
+                              trailing:
+                                  Icon(Icons.remove_circle_outline_rounded),
+                            ),
                           )),
                       separatorBuilder: (
                         context,
                         index,
                       ) {
-                        return Divider();
+                        return Divider(
+                          color: Colors.black,
+                        );
                       },
                       itemCount: cart.length),
                 ),
@@ -90,7 +111,9 @@ class _rentactivityState extends State<rentactivity> {
                   //box tosca
                   child: Container(
                     margin: EdgeInsets.all(15),
+                    padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                     decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blueAccent),
                       borderRadius: BorderRadius.circular(5),
                       color: Color.fromARGB(67, 6, 242, 207).withOpacity(0.2),
                     ),
@@ -187,7 +210,9 @@ class _rentactivityState extends State<rentactivity> {
                                 context,
                                 index,
                               ) {
-                                return Divider();
+                                return Divider(
+                                  color: Colors.blue[900],
+                                );
                               },
                               itemCount: listbarang.length),
                         )
@@ -216,6 +241,23 @@ class _rentactivityState extends State<rentactivity> {
     //     },
     //   ),
     // ));
+  }
+
+  Future<void> keluarAkun() async {
+    AuthenticationService service =
+        await AuthenticationService(FirebaseAuth.instance);
+    if (service.logoutGoogle() != null) {
+      kembaliKeLoginPage();
+      print("sukses log Out");
+    } else {
+      print(" gagal");
+    }
+  }
+
+  void kembaliKeLoginPage() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return adminlogin();
+    }));
   }
 
   // Widget bulidListItem(int index) {
