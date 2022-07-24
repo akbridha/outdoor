@@ -27,6 +27,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  counter_button: ^1.0.1
   cupertino_icons: ^1.0.2
   firebase_auth: ^1.0.0
   firebase_core: ^1.19.2
@@ -35,6 +36,7 @@ dependencies:
     sdk: flutter
   google_sign_in: ^5.4.0
   http: ^0.13.4
+  intl: ^0.17.0
   provider: ^6.0.3
   shared_preferences: ^2.0.15
 

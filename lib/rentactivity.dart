@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:counter_button/counter_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:outdoor/adminlogin.dart';
+import 'package:outdoor/order.dart';
 import 'package:outdoor/repository.dart';
 
 import 'auth_services.dart';
@@ -18,6 +21,19 @@ class _rentactivityState extends State<rentactivity> {
   repository repo = repository();
   List<Barang> listbarang = [];
   List cart = [];
+  List cartBiaya = [];
+  int bayar = 0;
+  int totalBayar = 0;
+
+  int hari = 1;
+  //  var f = NumberFormat("###.0#", "en_US");
+  // print(f.format(12.345));
+
+  callback(varTagihan) {
+    setState(() {
+      totalBayar = varTagihan;
+    });
+  }
 
   ambilData() async {
     listbarang = await repo.ambilListBarang();
@@ -74,13 +90,121 @@ class _rentactivityState extends State<rentactivity> {
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.8,
               child: Column(children: [
+                Row(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: Row(
+                        children: [
+                          Container(
+
+                              //////////kotak atas total cart
+                              margin: EdgeInsets.fromLTRB(9, 4, 9, 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Color.fromARGB(255, 0, 0, 0)),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              // color: Colors.white,
+                              height: 35,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(NumberFormat.currency(
+                                          locale: 'id',
+                                          decimalDigits: 0,
+                                          symbol: 'Rp. ')
+                                      .format(totalBayar = (bayar * hari)))
+                                ],
+                              )),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(18, 5, 18, 0),
+                            child: CounterButton(
+                                count: hari,
+                                onChange: (int val) {
+                                  if (val >= 0) {
+                                    setState(() {
+                                      hari = val;
+
+                                      print(hari);
+                                    });
+                                  } else {
+                                    // do nothing
+                                  }
+                                },
+                                loading: false),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.fromLTRB(9, 0, 0, 0),
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(primary: Colors.grey),
+                          onPressed: () {
+                            setState(() {
+                              bayar = 0;
+                              cart.clear();
+                              cartBiaya.clear();
+                            });
+                          },
+                          child: Text("Kosongkan")),
+                    ),
+                    Container(
+
+                        //////////kotak atas total cart
+                        margin: EdgeInsets.fromLTRB(9, 1, 9, 0),
+                        padding: EdgeInsets.fromLTRB(0, 2, 0, 0),
+                        decoration: BoxDecoration(
+                            // border:
+                            //     Border.all(color: Color.fromARGB(255, 0, 0, 0)),
+                            // borderRadius: BorderRadius.circular(5),
+                            ),
+                        // color: Colors.white,
+                        height: 35,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return Order(
+                                      tagihan: totalBayar,
+                                    );
+                                  }));
+                                  // Order(
+                                  //     // tagihan: totalBayar,
+                                  //     );
+                                },
+                                child: Text("Pesan")),
+                          ],
+                        )),
+                  ],
+                ),
                 Container(
                   ////////////////////////////////kotak atas cart
                   margin: EdgeInsets.fromLTRB(9, 4, 9, 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  height: 250,
+                  height: 190,
                   width: MediaQuery.of(context).size.width,
                   child: ListView.separated(
                       itemBuilder: ((context, index) => Card(
@@ -88,9 +212,15 @@ class _rentactivityState extends State<rentactivity> {
                               leading: Icon(Icons.add_task_rounded),
                               title: Text(
                                   (index + 1).toString() + "." + cart[index]),
-                              onLongPress: () {
+                              onTap: () {
                                 setState(() {
+                                  if (bayar == 0) {
+                                    //nothing
+                                  } else {
+                                    bayar = bayar - int.parse(cartBiaya[index]);
+                                  }
                                   cart.removeAt(index);
+                                  cartBiaya.removeAt(index);
                                 });
                               },
                               trailing:
@@ -190,12 +320,21 @@ class _rentactivityState extends State<rentactivity> {
                                                   onPressed: () {
                                                     cart.add(listbarang[index]
                                                             .nama_barang +
-                                                        "-> Rp" +
+                                                        " : Rp. " +
+                                                        listbarang[index]
+                                                            .biaya_sewa);
+                                                    cartBiaya.add(
                                                         listbarang[index]
                                                             .biaya_sewa);
                                                     print("ini isi cart " +
                                                         cart.toString());
-                                                    setState(() {});
+                                                    setState(() {
+                                                      bayar = bayar +
+                                                          int.parse(
+                                                              listbarang[index]
+                                                                  .biaya_sewa);
+                                                      print(bayar);
+                                                    });
                                                   },
                                                   child: const Text("Tambah"),
                                                 ),
@@ -317,9 +456,8 @@ class Barang {
   }
 }
 
-
-          // onPressed: () {
-          //   Navigator.push(context, MaterialPageRoute(builder: (context) {
-          //     return rentactivity();
-          //   }));
-          // }
+// onPressed: () {
+//   Navigator.push(context, MaterialPageRoute(builder: (context) {
+//     return rentactivity();
+//   }));
+// }

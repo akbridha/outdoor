@@ -1,11 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:outdoor/adminlogin.dart';
-import 'package:outdoor/auth_services.dart';
+
 import 'package:outdoor/firebase_options.dart';
 import 'package:outdoor/rentactivity.dart';
-import 'package:outdoor/wrapper.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,11 +24,10 @@ class MyApp extends StatelessWidget {
         //     value: AuthServices.fireBaseUserStream,
         //     initialData: null,
         //     child:
-        MaterialApp(
+        const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:
-          //  const rentactivity(),
-          const adminlogin(),
+      home: rentactivity(),
+      // adminlogin(),
       // Wrapper(),
       // )
     );

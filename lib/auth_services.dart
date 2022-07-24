@@ -33,7 +33,28 @@ class AuthenticationService {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: ['email', 'https://www.googleapis.com/auth/contacts.readonly']);
 
-  Future<bool> signInGoogle() async {
+  // Future<bool> signInGoogle() async {
+  //   try {
+  //     await _googleSignIn.signIn();
+  //     final userGoogle = _googleSignIn.currentUser;
+  //     if (userGoogle != null) {
+  //       final GoogleSignInAuthentication googleSignInAuthentication =
+  //           await userGoogle.authentication;
+  //       final AuthCredential credential = GoogleAuthProvider.credential(
+  //         accessToken: googleSignInAuthentication.accessToken,
+  //         idToken: googleSignInAuthentication.idToken,
+  //       );
+  //       await _firebaseAuth.signInWithCredential(credential);
+  //     }
+  //     print(userGoogle);
+  //     return _googleSignIn.currentUser != null;
+  //   } on FirebaseAuthException catch (e) {
+  //     debugPrint(e.message ?? "Unknow Errors");
+  //     return false;
+  //   }
+  // }
+
+  Future<String> signInGoogle() async {
     try {
       await _googleSignIn.signIn();
       final userGoogle = _googleSignIn.currentUser;
@@ -46,11 +67,11 @@ class AuthenticationService {
         );
         await _firebaseAuth.signInWithCredential(credential);
       }
-      print(userGoogle);
-      return _googleSignIn.currentUser != null;
+      // print("ini adalah" + (userGoogle.runtimeType.toString()));
+      return userGoogle.toString();
     } on FirebaseAuthException catch (e) {
       debugPrint(e.message ?? "Unknow Errors");
-      return false;
+      return "fail";
     }
   }
 
