@@ -53,20 +53,28 @@ class adminloginState extends State<adminlogin> {
   //   }
   // }
 
-  // @override
-  // void initState() {
-  //   // _googleSignIn.onCurrentUserChanged.listen((event) {
+  @override
+  void initState() {
+    print(userToString);
+    if (userToString == "none") {
+      print("user none");
+      // do nothing
 
-  //   // penggunaKini == null ? print("null") : print("not null");
-  //   // print(penggunaKini);
+    } else {
+      keBeranda();
+    }
+    //   // _googleSignIn.onCurrentUserChanged.listen((event) {
 
-  //   //   setState(() {
-  //   //     _currentUser = event;
-  //   //   });
-  //   // });
-  //   // _googleSignIn.signInSilently();
-  //   super.initState();
-  // }
+    //   // penggunaKini == null ? print("null") : print("not null");
+    //   // print(penggunaKini);
+
+    //   //   setState(() {
+    //   //     _currentUser = event;
+    //   //   });
+    //   // });
+    //   // _googleSignIn.signInSilently();
+    //   super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -327,11 +335,16 @@ class adminloginState extends State<adminlogin> {
     AuthenticationService service =
         await AuthenticationService(FirebaseAuth.instance);
     try {
-      String result = (await service.signInGoogle());
+      String result = await service.signInGoogle();
       // print(userToString.runtimeType);
-      // listUser = userToString.split(",");
+      listUser = result.split(",");
 
-      // print(listUser[1]);
+      print(listUser[1]);
+
+      userToString = listUser[1].toString();
+      setState(() {
+        initState();
+      });
       // penggunaKini = listUser[1];
 
       // listUser = jsonDecode(userToString);
@@ -354,6 +367,7 @@ class adminloginState extends State<adminlogin> {
         await AuthenticationService(FirebaseAuth.instance);
     if (service.logoutGoogle() != null) {
       print("sukses log Out");
+      setState(() {});
     } else {
       print(" gagal");
     }
