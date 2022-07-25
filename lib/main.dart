@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:outdoor/adminlogin.dart';
+import 'package:outdoor/approve.dart';
 
 import 'package:outdoor/firebase_options.dart';
 import 'package:outdoor/rentactivity.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home:
           // rentactivity(),
-          adminlogin(),
+          // adminlogin(),
+          Approve(),
       // Wrapper(),
       // )
     );

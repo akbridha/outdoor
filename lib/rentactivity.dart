@@ -22,6 +22,7 @@ class _rentactivityState extends State<rentactivity> {
   List<Barang> listbarang = [];
   List cart = [];
   List cartBiaya = [];
+  List<String> listStok = [];
   int bayar = 0;
   int totalBayar = 0;
 
@@ -37,7 +38,7 @@ class _rentactivityState extends State<rentactivity> {
 
   ambilData() async {
     listbarang = await repo.ambilListBarang();
-    print(listbarang.toString());
+    // print(listbarang.toString());
     setState(() {});
   }
 
@@ -187,6 +188,7 @@ class _rentactivityState extends State<rentactivity> {
                                       MaterialPageRoute(builder: (context) {
                                     return Order(
                                       tagihan: totalBayar,
+                                      stokOrder: listStok,
                                     );
                                   }));
                                   // Order(
@@ -318,7 +320,8 @@ class _rentactivityState extends State<rentactivity> {
                                               children: [
                                                 ElevatedButton(
                                                   onPressed: () {
-                                                    cart.add(listbarang[index]
+                                                    cart.add(listbarang[
+                                                                index] /*ini list untuk nampilin di listview aja */
                                                             .nama_barang +
                                                         " : Rp. " +
                                                         listbarang[index]
@@ -326,6 +329,14 @@ class _rentactivityState extends State<rentactivity> {
                                                     cartBiaya.add(
                                                         listbarang[index]
                                                             .biaya_sewa);
+                                                    /*ini list untuk nampilin jumlah harga dan */
+                                                    /*memfasilitasi penghapusan di keranjang */
+
+                                                    listStok.add(
+                                                        listbarang[index]
+                                                            .nama_barang);
+                                                    //ini untuk keperluan penghitungan stok
+
                                                     print("ini isi cart " +
                                                         cart.toString());
                                                     setState(() {

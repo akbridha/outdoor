@@ -113,60 +113,65 @@ class adminloginState extends State<adminlogin> {
                   color: Colors.grey[100]?.withOpacity(0.8),
                 ),
                 width: 600,
-                height: 400,
-                child: Column(children: [
-                  Container(
-                      margin: const EdgeInsets.fromLTRB(30, 30, 30, 5),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextField(
-                              controller: controllerUN,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "UserName"),
-                            ),
-                          ])),
-                  Container(
-                      margin: const EdgeInsets.fromLTRB(30, 30, 30, 5),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            TextField(
-                              controller: controllerPW,
-                              decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Password"),
-                            ),
-                          ])),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        side: const BorderSide(width: 100),
-                      ),
-                      onPressed: () {
-                        masukPakaiGAkun().whenComplete(() {
-                          // keBeranda();
-                        });
-                      },
-                      child: const Text('Masuk')),
-                  // Container(
-                  //   margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-                  //   child: SizedBox(
-                  //     height: 30, //height of button
-                  //     width: 360,
-                  //     child: ElevatedButton(
-                  //         // UNTUK CEK ISI SF
-                  //         style: ElevatedButton.styleFrom(
-                  //           side: const BorderSide(width: 80),
-                  //           primary: Colors.grey[100], // background
-                  //           onPrimary: const Color.fromARGB(
-                  //               255, 39, 54, 163), // foreground
-                  //         ),
-                  //         child: const Text('Pelanggan'),
-                  //         onPressed: () {}),
-                  //   ),
-                  // ),
-                ])),
+                height: 300,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text(
+                        "Masuk dengan Email Google yang terdaftar pada sistem",
+                        textAlign: TextAlign.center,
+                      ), // Container(
+                      //     margin: const EdgeInsets.fromLTRB(30, 30, 30, 5),
+                      //     child: Column(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           TextField(
+                      //             controller: controllerUN,
+                      //             decoration: const InputDecoration(
+                      //                 border: OutlineInputBorder(),
+                      //                 labelText: "UserName"),
+                      //           ),
+                      //         ])),
+                      // Container(
+                      //     margin: const EdgeInsets.fromLTRB(30, 30, 30, 5),
+                      //     child: Column(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           TextField(
+                      //             controller: controllerPW,
+                      //             decoration: const InputDecoration(
+                      //                 border: OutlineInputBorder(),
+                      //                 labelText: "Password"),
+                      //           ),
+                      //         ])),
+                      ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            side: const BorderSide(width: 100),
+                          ),
+                          onPressed: () {
+                            masukPakaiGAkun().whenComplete(() {
+                              // keBeranda();
+                            });
+                          },
+                          child: const Text('Masuk')),
+                      // Container(
+                      //   margin: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+                      //   child: SizedBox(
+                      //     height: 30, //height of button
+                      //     width: 360,
+                      //     child: ElevatedButton(
+                      //         // UNTUK CEK ISI SF
+                      //         style: ElevatedButton.styleFrom(
+                      //           side: const BorderSide(width: 80),
+                      //           primary: Colors.grey[100], // background
+                      //           onPrimary: const Color.fromARGB(
+                      //               255, 39, 54, 163), // foreground
+                      //         ),
+                      //         child: const Text('Pelanggan'),
+                      //         onPressed: () {}),
+                      //   ),
+                      // ),
+                    ])),
           ),
         )
         //        _currentUser == null

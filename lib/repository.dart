@@ -22,16 +22,19 @@ class repository {
     }
   }
 
-  Future postData(String name, String country_of_origin) async {
+  Future postData(String no_cust, String nama_barang, String kuantitas) async {
     try {
-      final respon = await http.post(Uri.parse(_baseUrl + '/imigrangelap'),
-          body: {'name': name, 'country_of_origin': country_of_origin});
+      final respon = await http.post(Uri.parse(_baseUrl + '/createRequest.php'),
+          body: {
+            'no_cust': no_cust,
+            'nama_barang': nama_barang,
+            'kuantitas': kuantitas
+          });
 
       if (respon.statusCode == 201) {
-        print(respon.body);
-        Iterable iter = jsonDecode(respon.body);
-        List<Barang> blog = iter.map((e) => Barang.fromJson(e)).toList();
-        return blog;
+        return true;
+      } else {
+        return false;
       }
     } catch (e) {
       print(e.toString());
