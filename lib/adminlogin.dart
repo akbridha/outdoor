@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:outdoor/approve.dart';
 import 'package:outdoor/auth_services.dart';
 import 'package:outdoor/rentactivity.dart';
 
@@ -81,11 +82,11 @@ class adminloginState extends State<adminlogin> {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(
-                onPressed: () {
-                  keluarAkun();
-                },
-                icon: Icon(Icons.logout_outlined))
+            // IconButton(
+            //     onPressed: () {
+            //       keluarAkun();
+            //     },
+            //     icon: Icon(Icons.logout_outlined))
           ],
           title: const Text("Login Admin"),
         ),
@@ -332,7 +333,7 @@ class adminloginState extends State<adminlogin> {
 
   void keBeranda() {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const rentactivity();
+      return const Approve();
     }));
   }
 

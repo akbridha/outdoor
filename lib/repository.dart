@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:http/http.dart' as http;
+import 'package:outdoor/approve.dart';
 import 'package:outdoor/rentactivity.dart';
 
 class repository {
+  String? tempp;
   final _baseUrl = 'https://rentalzeus.000webhostapp.com';
 
   Future ambilListBarang() async {
@@ -41,6 +43,59 @@ class repository {
     }
   }
 
+  Future postApprovalData(String nama_barang, String kuantitas) async {
+    try {
+      final respon = await http.post(Uri.parse(_baseUrl + '/updateStok.php'),
+          body: {'nama_barang': nama_barang, 'kuantitas': kuantitas});
+
+      if (respon.statusCode == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future ambilListReques() async {
+    try {
+      final respon = await http.get(Uri.parse(_baseUrl + '/getAllReques.php'));
+
+      if (respon.statusCode == 200) {
+        print("ini respon body " + respon.body.toString() + " ini buntut");
+        Iterable iter = jsonDecode(respon.body);
+        List<Reques> requesList = iter.map((e) => Reques.fromJson(e)).toList();
+        return requesList;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future ambilRequesByName(String no_cust) async {
+    try {
+      final respon = await http.post(
+          Uri.parse(_baseUrl + '/getRequesByName.php'),
+          body: {'no_cust': no_cust});
+      print(await respon.body.toString());
+      Iterable iter = jsonDecode(respon.body);
+      List<RequesByName> requesListByName =
+          iter.map((e) => RequesByName.fromJson(e)).toList();
+      return requesListByName;
+
+      // tempp = respon.body.toString();
+      // approve.key = respon.body();
+
+      // if (respon.statusCode == 200) {
+
+      // } else {
+      //   return "fail";
+      // }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
   // Future<Album> fetchAlbum() async {
   //   final response = await http
   //       .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));

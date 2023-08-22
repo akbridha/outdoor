@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:outdoor/confirm.dart';
+import 'package:outdoor/confirm.dart';
+import 'package:outdoor/rentactivity.dart';
+import 'package:outdoor/repository.dart';
 
-class Approve extends StatelessWidget {
+class Approve extends StatefulWidget {
   const Approve({Key? key}) : super(key: key);
+
+  @override
+  State<Approve> createState() => _ApproveState();
+}
+
+class _ApproveState extends State<Approve> {
+  List<Reques> requestList = [];
+  List<String> sumNoCus = ["-"];
+  List<RequesByName> listrequesbyname = [];
+  String tempString = "";
+
+  repository repo = repository();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    ambilReques();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +67,23 @@ class Approve extends StatelessWidget {
                 itemBuilder: ((context, index) => Card(
                       child: ListTile(
                         leading: Icon(Icons.add_task_rounded),
-                        title: Text("contoh list"
+                        title: Text(sumNoCus[index]
                             // (index + 1).toString() + "." + cart[index]
 
                             ),
-                        onTap: () {
+                        onTap: () async {
+                          listrequesbyname =
+                              await repo.ambilRequesByName(sumNoCus[index]);
+                          print("ini di halaman approve " +
+                              listrequesbyname.toString() +
+                              " ini buntut");
+
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return Confirm(
+                              listrequesbyname: listrequesbyname,
+                            );
+                          }));
                           // setState(() {
                           //   if (bayar == 0) {
                           //     //nothing
@@ -61,7 +94,6 @@ class Approve extends StatelessWidget {
                           //   cartBiaya.removeAt(index);
                           // });
                         },
-                        trailing: Icon(Icons.remove_circle_outline_rounded),
                       ),
                     )),
                 separatorBuilder: (
@@ -72,10 +104,67 @@ class Approve extends StatelessWidget {
                     color: Colors.black,
                   );
                 },
-                itemCount: 20),
+                itemCount: sumNoCus.length),
           ),
         ),
       ),
     );
+  }
+
+  void ambilReques() async {
+    requestList = await repo.ambilListReques();
+
+    print(sumNoCus);
+
+    requestList.forEach((element) {
+      bool ditemukan = false;
+      bool ulang = true;
+      int i = 0;
+
+      while (ulang) {
+        // if (stokKirim == null) {
+        //   cekList();
+
+        // }
+        // print("i = " + i.toString());
+
+        print("mencek" +
+            sumNoCus[i] +
+            " apakah sama dengan " +
+            element.no_cust.toString());
+
+        if (sumNoCus[i].toString().contains(element.no_cust)) {
+          ditemukan = true;
+          ulang = false;
+        } else {
+          i++;
+          if (i == sumNoCus.length) {
+            ulang = false;
+          } else {
+            ulang = true;
+          }
+        }
+        ////////////////////////////////////
+      }
+      if (ditemukan == true) {
+        print(element.no_cust + " ditemukan");
+        // int temp = int.parse(stokKirim[i]["kuantitas"].toString());
+        // temp = temp + 1;
+        // stokKirim[i]["kuantitas"] = temp.toString();
+        // print("banyaknya " + temp.toString());
+
+      } else if (ditemukan == false) {
+        print(element.no_cust +
+            " tidak ditemukan... bikin baru di list sumNoCus");
+        sumNoCus.add(element.no_cust.toString());
+        // print("print stok kirim${stokKirim[0]["nama"]}");
+        // print("print stok kirim${stokKirim[0]["kuantitas"]}");
+
+      }
+    });
+    sumNoCus.removeAt(0);
+    print(sumNoCus);
+
+    setState(() {});
   }
 }

@@ -62,9 +62,11 @@ class _rentactivityState extends State<rentactivity> {
                 }),
             IconButton(
                 onPressed: () {
-                  keluarAkun();
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const adminlogin();
+                  }));
                 },
-                icon: Icon(Icons.logout_outlined))
+                icon: Icon(Icons.login_outlined))
           ],
           backgroundColor: Color.fromARGB(252, 7, 245, 206),
         ),
@@ -463,6 +465,50 @@ class Barang {
       id_barang: json['id_barang'],
       biaya_sewa: json['biaya_sewa'],
       stok: json['stok'],
+    );
+  }
+}
+
+class Reques {
+  final String no_cust;
+  final String nama_barang;
+  final String stok;
+
+  const Reques({
+    required this.no_cust,
+    required this.nama_barang,
+    required this.stok,
+  });
+
+  @override
+  toString() => ' $nama_barang';
+
+  factory Reques.fromJson(Map<dynamic, dynamic> json) {
+    //tadi Map<string,dynamic>
+    return Reques(
+      no_cust: json['no_cust'],
+      nama_barang: json['nama_barang'],
+      stok: json['kuantitas'],
+    );
+  }
+}
+
+class RequesByName {
+  final String nama_barang;
+  final String stok;
+
+  const RequesByName({
+    required this.nama_barang,
+    required this.stok,
+  });
+
+  @override
+  toString() => ' $nama_barang';
+
+  factory RequesByName.fromJson(Map<String, dynamic> json) {
+    return RequesByName(
+      nama_barang: json['nama_barang'],
+      stok: json['kuantitas'],
     );
   }
 }

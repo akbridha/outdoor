@@ -106,6 +106,7 @@ class _OrderState extends State<Order> {
 
   void prosesDataOrder() {
     widget.stokOrder.forEach((element) {
+      //untuk setiap elemen dicek satu persatu dengan loop foreach
       print("ini stok yang belum$stokKirim");
       print("----------------");
       print("mencek " + element + "  pada order");
@@ -157,12 +158,15 @@ class _OrderState extends State<Order> {
   Future<void> kirimDataRequest(String no_cust) async {
     // print(stokKirim);
     stokKirim.forEach((element) async {
+      //perintah untuk setiap baris yang ada pada stokkirim mengirim ke api
       String nama_barang = element["nama"].toString();
       print("nama barang" + nama_barang);
       String kuantitas = element["kuantitas"].toString();
       print("kuantitas" + kuantitas);
 
       bool response = await repo.postData(no_cust, nama_barang, kuantitas);
+
+      ///perintahnya
       print(response.toString());
     });
 
