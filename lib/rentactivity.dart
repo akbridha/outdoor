@@ -95,6 +95,7 @@ class _rentactivityState extends State<rentactivity> {
               ),
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height * 0.8,
+
               child: Column(children: [
                 Row(
                   // mainAxisAlignment: MainAxisAlignment.start,
@@ -180,50 +181,50 @@ class _rentactivityState extends State<rentactivity> {
                         )),
                   ],
                 ),
-                Container(
-                  ////////////////////////////////kotak atas cart
-                  margin: EdgeInsets.fromLTRB(9, 4, 9, 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  height: 190,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.separated(
-                      itemBuilder: ((context, index) => Card(
-                            child: ListTile(
-                              leading: const Icon(Icons.add_task_rounded),
-                              title: Text("${index + 1}." + cart[index]),
-                              onTap: () {
-                                hapusCart(index);
-                                setState(() {
-                                  if (bayar == 0) {
-                                    //nothing
-                                  } else {
-                                    bayar = bayar - int.parse(cartBiaya[index]);
-                                  }
-                                  print(index);
-                                  cart.removeAt(index);
-                                  cartBiaya.removeAt(index);
-                                });
-                              },
-                              trailing: const Icon(
-                                  Icons.remove_circle_outline_rounded),
-                            ),
-                          )),
-                      separatorBuilder: (
-                        context,
-                        index,
-                      ) {
-                        return Divider(
-                          color: Colors.black,
-                        );
-                      },
-                      itemCount: cart.length),
-                ),
+                // Container(
+                //   ////////////////////////////////kotak atas cart
+                //   margin: EdgeInsets.fromLTRB(9, 4, 9, 10),
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(8),
+                //   ),
+                //   height: 190,
+                //   width: MediaQuery.of(context).size.width,
+                //   child: ListView.separated(
+                //       itemBuilder: ((context, index) => Card(
+                //             child: ListTile(
+                //               leading: const Icon(Icons.add_task_rounded),
+                //               title: Text("${index + 1}." + cart[index]),
+                //               onTap: () {
+                //                 hapusCart(index);
+                //                 setState(() {
+                //                   if (bayar == 0) {
+                //                     //nothing
+                //                   } else {
+                //                     bayar = bayar - int.parse(cartBiaya[index]);
+                //                   }
+                //                   print(index);
+                //                   cart.removeAt(index);
+                //                   cartBiaya.removeAt(index);
+                //                 });
+                //               },
+                //               trailing: const Icon(
+                //                   Icons.remove_circle_outline_rounded),
+                //             ),
+                //           )),
+                //       separatorBuilder: (
+                //         context,
+                //         index,
+                //       ) {
+                //         return Divider(
+                //           color: Colors.black,
+                //         );
+                //       },
+                //       itemCount: cart.length),
+                // ),
                 Expanded(
                   //box tosca
                   child: Container(
-                    margin: EdgeInsets.all(15),
+                    margin: EdgeInsets.all(5),
                     padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.blueAccent),
@@ -233,18 +234,38 @@ class _rentactivityState extends State<rentactivity> {
                     width: MediaQuery.of(context)
                         .size
                         .width, // apabila column dia apply tinggi. bila row dia apply lebar
-                    height:
-                        100, // lebar tidak terpakai bila sudah dibungkus expanded
+                    height: MediaQuery.of(context).size.width * 0.8,
 
                     child: Column(
                       children: [
                         Expanded(
                           child: ListView.separated(
                               ////////////////////////////////////////////
-                              itemBuilder: ((context, index) => Card(
+                              itemBuilder: ((context, index) => InkWell(
+                                  onTap: () {
+                                    _tampilkanDialog(context, index);
+                                  },
+                                  child: Card(
                                     child: Row(
                                       children: [
                                         Flexible(
+                                          //gambar
+                                          flex: 1,
+                                          child: Container(
+                                            margin:
+                                                EdgeInsets.fromLTRB(5, 0, 7, 0),
+                                            child: Image.network(
+                                              listbarang[index].gambar,
+                                              fit: BoxFit.cover,
+                                              width:
+                                                  40, // Atur lebar gambar sesuai kebutuhan
+                                              height:
+                                                  40, // Atur tinggi gambar sesuai kebutuhan
+                                            ),
+                                          ),
+                                        ),
+                                        Flexible(
+                                          /////baris kiri
                                           flex: 1,
                                           child: Column(
                                             crossAxisAlignment:
@@ -264,7 +285,7 @@ class _rentactivityState extends State<rentactivity> {
                                                     .harga
                                                     .toString()),
                                               ]),
-                                              //baris stok
+                                              //baris tipe
                                               Row(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
@@ -282,101 +303,39 @@ class _rentactivityState extends State<rentactivity> {
                                                       ],
                                                     )),
                                                   ]),
+                                              Text(listbarang[index].catatan)
                                             ],
                                           ),
                                         ),
                                         Flexible(
-                                          flex: 1,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Container(
-                                                margin: EdgeInsets.fromLTRB(
-                                                    18, 5, 18, 5),
-                                                child: CounterButton(
-                                                    count:
-                                                        //  hari
+                                            flex: 1,
+                                            child: Container(
+                                              margin: EdgeInsets.fromLTRB(
+                                                  0, 5, 0, 5),
+                                              child: CounterButton(
+                                                  count:
+                                                      //  hari
+                                                      listbarang[index].jumlah,
+                                                  onChange: (int val) {
+                                                    if (val >= 0) {
+                                                      setState(() {
                                                         listbarang[index]
-                                                            .jumlah,
-                                                    onChange: (int val) {
-                                                      if (val >= 0) {
-                                                        setState(() {
-                                                          listbarang[index]
-                                                              .jumlah = val;
+                                                            .jumlah = val;
 
-                                                          print(hari);
-                                                        });
-                                                      } else {
-                                                        // do nothing
-                                                      }
+                                                        print(hari);
+                                                      });
+                                                    } else {
+                                                      // do nothing
+                                                    }
 
-                                                      print(listbarang
-                                                          .toString());
-                                                    },
-                                                    loading: false),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-
-                                        // Flexible(
-                                        //   flex: 1,
-                                        //   child: Column(
-                                        //     crossAxisAlignment:
-                                        //         CrossAxisAlignment.start,
-                                        //   ),
-                                        // ),
-                                        // Flexible(
-                                        //   flex: 1,
-                                        //   child: Container(
-                                        //     margin:
-                                        //         EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                        //     child: Row(
-                                        //       mainAxisAlignment:
-                                        //           MainAxisAlignment.end,
-                                        //       children: [
-                                        //         ElevatedButton(
-                                        //           onPressed: () {
-                                        //             cart.add(listbarang[
-                                        //                         index] /*ini list untuk nampilin di listview aja */
-                                        //                     .nama +
-                                        //                 " : Rp. " +
-                                        //                 listbarang[index]
-                                        //                     .harga
-                                        //                     .toString());
-                                        //             cartBiaya.add(
-                                        //                 listbarang[index]
-                                        //                     .harga
-                                        //                     .toString());
-
-                                        //             /*ini list untuk nampilin jumlah harga dan */
-                                        //             /*memfasilitasi penghapusan di keranjang */
-
-                                        //             listStok.add(
-                                        //                 listbarang[index].nama);
-                                        //             //ini untuk keperluan penghitungan stok
-
-                                        //             print("ini isi cart " +
-                                        //                 cart.toString());
-                                        //             setState(() {
-                                        //               bayar = bayar +
-                                        //                   int.parse(
-                                        //                       listbarang[index]
-                                        //                           .harga
-                                        //                           .toString());
-                                        //               print(bayar);
-                                        //             });
-                                        //           },
-                                        //           child: const Text("Tambah"),
-                                        //         ),
-                                        //       ],
-                                        //     ),
-                                        //   ),
-                                        // ),
+                                                    print(
+                                                        listbarang.toString());
+                                                  },
+                                                  loading: false),
+                                            )),
                                       ],
                                     ),
-                                  )),
+                                  ))),
                               separatorBuilder: (
                                 context,
                                 index,
@@ -412,6 +371,48 @@ class _rentactivityState extends State<rentactivity> {
     //     },
     //   ),
     // ));
+  }
+
+  void _tampilkanDialog(BuildContext context, index) {
+    // Controller untuk mengambil input dari TextField
+    TextEditingController textFieldController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Judul Pop-Up'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Isi pesan popup disini.'),
+              SizedBox(height: 10), // Jarak antara teks dan TextField
+              TextField(
+                controller: textFieldController,
+                decoration: InputDecoration(
+                  hintText: 'Tambahkan catatan',
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Ambil nilai dari TextField
+                String catatan = textFieldController.text;
+                // Lakukan sesuatu dengan catatan, misalnya mencetaknya
+                listbarang[index].catatan = catatan;
+                print('Catatan: $catatan');
+
+                // Tutup popup ketika tombol ditekan
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> keluarAkun() async {
@@ -496,30 +497,33 @@ class Barang {
   final String tipe;
   final String gambar;
   int jumlah;
+  String catatan;
 
-  Barang({
-    required this.id,
-    required this.nama,
-    required this.harga,
-    required this.tipe,
-    required this.gambar,
-    this.jumlah = 0,
-  });
+  Barang(
+      {required this.id,
+      required this.nama,
+      required this.harga,
+      required this.tipe,
+      required this.gambar,
+      this.jumlah = 0,
+      this.catatan = "-"});
 
   @override
   String toString() {
-    return 'Barang(id: $id, nama: $nama, harga: $harga, tipe: $tipe, gambar: $gambar , jumlah: $jumlah)';
+    return 'Barang(id: $id, nama: $nama, harga: $harga, tipe: $tipe, gambar: $gambar , jumlah: $jumlah, catatan: $catatan)';
   }
 
   factory Barang.fromJson(Map<String, dynamic> json) {
     int jumlah = json['jumlah'] ?? 0;
+    String catatan = json['catatan'] ?? "-";
     return Barang(
         id: json['id'],
         nama: json['nama'],
         harga: json['harga'],
         tipe: json['tipe'],
         gambar: json['gambar'],
-        jumlah: jumlah);
+        jumlah: jumlah,
+        catatan: catatan);
   }
 }
 
