@@ -1,0 +1,35 @@
+{
+    "status_code": 200,
+    "datas": [
+        {
+            "id": 1,
+            "nama": "cecek",
+            "harga": 10000,
+            "tipe": "makanan",
+            "gambar": "cecek.jpg"
+        },
+        {
+            "id": 1,
+            "nama": "cecek",
+            "harga": 10000,
+            "tipe": "makanan",
+            "gambar": "cecek.jpg"
+        }
+
+    ]
+}
+
+
+
+[
+    {
+     "id_barang":"14",
+     "nama_barang":"Tenda 2 single",
+     "biaya_sewa":"15000","stok":"13"
+    },
+
+    {"id_barang":"26",
+    "nama_barang":"Flysheet ",
+    "biaya_sewa":"10000",
+    "stok":"5"}
+]

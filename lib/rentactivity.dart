@@ -27,6 +27,7 @@ class _rentactivityState extends State<rentactivity> {
   int totalBayar = 0;
 
   int hari = 1;
+  int jumlah = 0;
   //  var f = NumberFormat("###.0#", "en_US");
   // print(f.format(12.345));
 
@@ -38,13 +39,15 @@ class _rentactivityState extends State<rentactivity> {
 
   ambilData() async {
     listbarang = await repo.ambilListBarang();
-    // print(listbarang.toString());
+    print(listbarang);
+
+    // repo.ambilListBarang();
     setState(() {});
   }
 
   @override
   void initState() {
-    ambilData(); // TODO: implement initState
+    ambilData();
     super.initState();
   }
 
@@ -52,7 +55,7 @@ class _rentactivityState extends State<rentactivity> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Prepare Your Stuff"),
+          title: Text("Menu"),
           actions: [
             IconButton(
                 icon: Icon(Icons.replay_outlined,
@@ -74,9 +77,9 @@ class _rentactivityState extends State<rentactivity> {
             //kotak background
 
             decoration: BoxDecoration(
-              image: const DecorationImage(
-                  image: AssetImage("assets/images/camp.png"),
-                  fit: BoxFit.cover),
+              // image: const DecorationImage(
+              //     image: AssetImage("assets/images/camp.png"),
+              //     fit: BoxFit.cover),
               borderRadius: BorderRadius.circular(5),
             ),
             width: MediaQuery.of(context).size.width,
@@ -125,31 +128,6 @@ class _rentactivityState extends State<rentactivity> {
                         ],
                       ),
                     ),
-                    Flexible(
-                      flex: 1,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(18, 5, 18, 0),
-                            child: CounterButton(
-                                count: hari,
-                                onChange: (int val) {
-                                  if (val >= 0) {
-                                    setState(() {
-                                      hari = val;
-
-                                      print(hari);
-                                    });
-                                  } else {
-                                    // do nothing
-                                  }
-                                },
-                                loading: false),
-                          )
-                        ],
-                      ),
-                    ),
                   ],
                 ),
                 Row(
@@ -166,7 +144,7 @@ class _rentactivityState extends State<rentactivity> {
                               cartBiaya.clear();
                             });
                           },
-                          child: Text("Kosongkan")),
+                          child: Text("Hapus")),
                     ),
                     Container(
 
@@ -197,7 +175,7 @@ class _rentactivityState extends State<rentactivity> {
                                   //     // tagihan: totalBayar,
                                   //     );
                                 },
-                                child: Text("Pesan")),
+                                child: const Text("Pesan")),
                           ],
                         )),
                   ],
@@ -213,22 +191,23 @@ class _rentactivityState extends State<rentactivity> {
                   child: ListView.separated(
                       itemBuilder: ((context, index) => Card(
                             child: ListTile(
-                              leading: Icon(Icons.add_task_rounded),
-                              title: Text(
-                                  (index + 1).toString() + "." + cart[index]),
+                              leading: const Icon(Icons.add_task_rounded),
+                              title: Text("${index + 1}." + cart[index]),
                               onTap: () {
+                                hapusCart(index);
                                 setState(() {
                                   if (bayar == 0) {
                                     //nothing
                                   } else {
                                     bayar = bayar - int.parse(cartBiaya[index]);
                                   }
+                                  print(index);
                                   cart.removeAt(index);
                                   cartBiaya.removeAt(index);
                                 });
                               },
-                              trailing:
-                                  Icon(Icons.remove_circle_outline_rounded),
+                              trailing: const Icon(
+                                  Icons.remove_circle_outline_rounded),
                             ),
                           )),
                       separatorBuilder: (
@@ -272,7 +251,7 @@ class _rentactivityState extends State<rentactivity> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                listbarang[index].nama_barang,
+                                                listbarang[index].nama,
                                                 style: const TextStyle(
                                                     fontSize: 17,
                                                     fontWeight:
@@ -282,8 +261,8 @@ class _rentactivityState extends State<rentactivity> {
                                               Row(children: [
                                                 Text("Rp."),
                                                 Text(listbarang[index]
-                                                    .biaya_sewa),
-                                                Text("/hari")
+                                                    .harga
+                                                    .toString()),
                                               ]),
                                               //baris stok
                                               Row(
@@ -293,14 +272,9 @@ class _rentactivityState extends State<rentactivity> {
                                                     Container(
                                                         child: Row(
                                                       children: [
-                                                        const Text(
-                                                            "Tersedia : ",
-                                                            style: TextStyle(
-                                                              fontSize: 10,
-                                                            )),
                                                         Text(
                                                             listbarang[index]
-                                                                .stok,
+                                                                .tipe,
                                                             style:
                                                                 const TextStyle(
                                                               fontSize: 10,
@@ -313,48 +287,93 @@ class _rentactivityState extends State<rentactivity> {
                                         ),
                                         Flexible(
                                           flex: 1,
-                                          child: Container(
-                                            margin:
-                                                EdgeInsets.fromLTRB(0, 0, 5, 0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              children: [
-                                                ElevatedButton(
-                                                  onPressed: () {
-                                                    cart.add(listbarang[
-                                                                index] /*ini list untuk nampilin di listview aja */
-                                                            .nama_barang +
-                                                        " : Rp. " +
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    18, 5, 18, 5),
+                                                child: CounterButton(
+                                                    count:
+                                                        //  hari
                                                         listbarang[index]
-                                                            .biaya_sewa);
-                                                    cartBiaya.add(
-                                                        listbarang[index]
-                                                            .biaya_sewa);
-                                                    /*ini list untuk nampilin jumlah harga dan */
-                                                    /*memfasilitasi penghapusan di keranjang */
+                                                            .jumlah,
+                                                    onChange: (int val) {
+                                                      if (val >= 0) {
+                                                        setState(() {
+                                                          listbarang[index]
+                                                              .jumlah = val;
 
-                                                    listStok.add(
-                                                        listbarang[index]
-                                                            .nama_barang);
-                                                    //ini untuk keperluan penghitungan stok
+                                                          print(hari);
+                                                        });
+                                                      } else {
+                                                        // do nothing
+                                                      }
 
-                                                    print("ini isi cart " +
-                                                        cart.toString());
-                                                    setState(() {
-                                                      bayar = bayar +
-                                                          int.parse(
-                                                              listbarang[index]
-                                                                  .biaya_sewa);
-                                                      print(bayar);
-                                                    });
-                                                  },
-                                                  child: const Text("Tambah"),
-                                                ),
-                                              ],
-                                            ),
+                                                      print(listbarang
+                                                          .toString());
+                                                    },
+                                                    loading: false),
+                                              )
+                                            ],
                                           ),
                                         ),
+
+                                        // Flexible(
+                                        //   flex: 1,
+                                        //   child: Column(
+                                        //     crossAxisAlignment:
+                                        //         CrossAxisAlignment.start,
+                                        //   ),
+                                        // ),
+                                        // Flexible(
+                                        //   flex: 1,
+                                        //   child: Container(
+                                        //     margin:
+                                        //         EdgeInsets.fromLTRB(0, 0, 5, 0),
+                                        //     child: Row(
+                                        //       mainAxisAlignment:
+                                        //           MainAxisAlignment.end,
+                                        //       children: [
+                                        //         ElevatedButton(
+                                        //           onPressed: () {
+                                        //             cart.add(listbarang[
+                                        //                         index] /*ini list untuk nampilin di listview aja */
+                                        //                     .nama +
+                                        //                 " : Rp. " +
+                                        //                 listbarang[index]
+                                        //                     .harga
+                                        //                     .toString());
+                                        //             cartBiaya.add(
+                                        //                 listbarang[index]
+                                        //                     .harga
+                                        //                     .toString());
+
+                                        //             /*ini list untuk nampilin jumlah harga dan */
+                                        //             /*memfasilitasi penghapusan di keranjang */
+
+                                        //             listStok.add(
+                                        //                 listbarang[index].nama);
+                                        //             //ini untuk keperluan penghitungan stok
+
+                                        //             print("ini isi cart " +
+                                        //                 cart.toString());
+                                        //             setState(() {
+                                        //               bayar = bayar +
+                                        //                   int.parse(
+                                        //                       listbarang[index]
+                                        //                           .harga
+                                        //                           .toString());
+                                        //               print(bayar);
+                                        //             });
+                                        //           },
+                                        //           child: const Text("Tambah"),
+                                        //         ),
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   )),
@@ -412,6 +431,8 @@ class _rentactivityState extends State<rentactivity> {
     }));
   }
 
+  hapusCart(index) {}
+
   // Widget bulidListItem(int index) {
   //   var item = listBarang[index];
   //   return Card(
@@ -443,75 +464,121 @@ class _rentactivityState extends State<rentactivity> {
   // }
 }
 
-class Barang {
-  final String nama_barang;
-  final String id_barang;
-  final String biaya_sewa;
-  final String stok;
+// class Barang {
+//   final String nama_barang;
+//   final String id_barang;
+//   final String biaya_sewa;
+//   final String stok;
 
-  const Barang({
-    required this.nama_barang,
-    required this.id_barang,
-    required this.biaya_sewa,
-    required this.stok,
+//   const Barang({
+//     required this.nama_barang,
+//     required this.id_barang,
+//     required this.biaya_sewa,
+//     required this.stok,
+//   });
+
+//   @override
+//   toString() => 'Barang: $nama_barang';
+
+//   factory Barang.fromJson(Map<String, dynamic> json) {
+//     return Barang(
+//       nama_barang: json['nama_barang'],
+//       id_barang: json['id_barang'],
+//       biaya_sewa: json['biaya_sewa'],
+//       stok: json['stok'],
+//     );
+//   }
+// }
+class Barang {
+  final int id;
+  final String nama;
+  final int harga;
+  final String tipe;
+  final String gambar;
+  int jumlah;
+
+  Barang({
+    required this.id,
+    required this.nama,
+    required this.harga,
+    required this.tipe,
+    required this.gambar,
+    this.jumlah = 0,
   });
 
   @override
-  toString() => 'Barang: $nama_barang';
+  String toString() {
+    return 'Barang(id: $id, nama: $nama, harga: $harga, tipe: $tipe, gambar: $gambar , jumlah: $jumlah)';
+  }
 
   factory Barang.fromJson(Map<String, dynamic> json) {
+    int jumlah = json['jumlah'] ?? 0;
     return Barang(
-      nama_barang: json['nama_barang'],
-      id_barang: json['id_barang'],
-      biaya_sewa: json['biaya_sewa'],
-      stok: json['stok'],
-    );
+        id: json['id'],
+        nama: json['nama'],
+        harga: json['harga'],
+        tipe: json['tipe'],
+        gambar: json['gambar'],
+        jumlah: jumlah);
   }
 }
 
-class Reques {
-  final String no_cust;
-  final String nama_barang;
-  final String stok;
+// class ResponseData {
+//   final List<Barang> datas;
 
-  const Reques({
-    required this.no_cust,
-    required this.nama_barang,
-    required this.stok,
-  });
+//   ResponseData({required this.datas});
 
-  @override
-  toString() => ' $nama_barang';
+//   factory ResponseData.fromJson(Map<String, dynamic> json) {
+//     final List<dynamic> datasList = json['datas'];
+//     final List<Barang> datas =
+//         datasList.map((data) => Barang.fromJson(data)).toList();
+//     return ResponseData(datas: datas);
+//   }
+// }
 
-  factory Reques.fromJson(Map<dynamic, dynamic> json) {
-    //tadi Map<string,dynamic>
-    return Reques(
-      no_cust: json['no_cust'],
-      nama_barang: json['nama_barang'],
-      stok: json['kuantitas'],
-    );
-  }
-}
+// class Reques {
+//   final String no_cust;
+//   final String nama_barang;
+//   final String stok;
 
-class RequesByName {
-  final String nama_barang;
-  final String stok;
+//   const Reques({
+//     required this.no_cust,
+//     required this.nama_barang,
+//     required this.stok,
+//   });
 
-  const RequesByName({
-    required this.nama_barang,
-    required this.stok,
-  });
+//   @override
+//   toString() => ' $nama_barang';
 
-  @override
-  toString() => ' $nama_barang';
+//   factory Reques.fromJson(Map<dynamic, dynamic> json) {
+//     //tadi Map<string,dynamic>
+//     return Reques(
+//       no_cust: json['no_cust'],
+//       nama_barang: json['nama_barang'],
+//       stok: json['kuantitas'],
+//     );
+//   }
+// }
 
-  factory RequesByName.fromJson(Map<String, dynamic> json) {
-    return RequesByName(
-      nama_barang: json['nama_barang'],
-      stok: json['kuantitas'],
-    );
-  }
-}
+// class RequesByName {
+//   final String nama_barang;
+//   final String stok;
+
+//   const RequesByName({
+//     required this.nama_barang,
+//     required this.stok,
+//   });
+
+//   @override
+//   toString() => ' $nama_barang';
+
+//   factory RequesByName.fromJson(Map<String, dynamic> json) {
+//     return RequesByName(
+//       nama_barang: json['nama_barang'],
+//       stok: json['kuantitas'],
+//     );
+//   }
+// }
 
 // onPressed: () {
 //   Navigator.push(context, MaterialPageRoute(builder: (context) {
