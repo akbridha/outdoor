@@ -381,11 +381,11 @@ class _rentactivityState extends State<rentactivity> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Judul Pop-Up'),
+          title: Text('Catatan'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('Isi pesan popup disini.'),
+              Text('Isi catatan anda disini.'),
               SizedBox(height: 10), // Jarak antara teks dan TextField
               TextField(
                 controller: textFieldController,
@@ -398,13 +398,14 @@ class _rentactivityState extends State<rentactivity> {
           actions: [
             TextButton(
               onPressed: () {
-                // Ambil nilai dari TextField
+                // Ambilnilai dari TextField
                 String catatan = textFieldController.text;
-                // Lakukan sesuatu dengan catatan, misalnya mencetaknya
-                listbarang[index].catatan = catatan;
+                if (textFieldController.text.isEmpty) {
+                } else {
+                  listbarang[index].catatan = catatan;
+                }
                 print('Catatan: $catatan');
 
-                // Tutup popup ketika tombol ditekan
                 Navigator.of(context).pop();
               },
               child: Text('OK'),
