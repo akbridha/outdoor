@@ -10,14 +10,14 @@ import 'package:outdoor/repository.dart';
 
 import 'auth_services.dart';
 
-class rentactivity extends StatefulWidget {
-  const rentactivity({Key? key}) : super(key: key);
+class rentActivity extends StatefulWidget {
+  const rentActivity({Key? key}) : super(key: key);
 
   @override
-  State<rentactivity> createState() => _rentactivityState();
+  State<rentActivity> createState() => _rentActivityState();
 }
 
-class _rentactivityState extends State<rentactivity> {
+class _rentActivityState extends State<rentActivity> {
   repository repo = repository();
   List<Barang> listbarang = [];
   List cart = [];
@@ -25,6 +25,7 @@ class _rentactivityState extends State<rentactivity> {
   List<String> listStok = [];
   int bayar = 0;
   int totalBayar = 0;
+  int _indexBotNav = 0;
 
   int hari = 1;
   int jumlah = 0;
@@ -54,6 +55,24 @@ class _rentactivityState extends State<rentactivity> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _indexBotNav,
+          onTap: _onTabBawahTapped,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Tab 1',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Tab 2',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Tab 3',
+            ),
+          ],
+        ),
         appBar: AppBar(
           title: Text("Menu"),
           actions: [
@@ -374,7 +393,6 @@ class _rentactivityState extends State<rentactivity> {
   }
 
   void _tampilkanDialog(BuildContext context, index) {
-    // Controller untuk mengambil input dari TextField
     TextEditingController textFieldController = TextEditingController();
 
     showDialog(
@@ -464,6 +482,12 @@ class _rentactivityState extends State<rentactivity> {
   //     ),
   //   );
   // }
+
+  void _onTabBawahTapped(int value) {
+    setState(() {
+      _indexBotNav = value;
+    });
+  }
 }
 
 // class Barang {

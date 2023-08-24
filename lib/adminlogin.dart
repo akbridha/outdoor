@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:outdoor/approve.dart';
+
 import 'package:outdoor/auth_services.dart';
 import 'package:outdoor/rentactivity.dart';
 
@@ -334,7 +334,7 @@ class adminloginState extends State<adminlogin> {
   void keBeranda() {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       // return const Approve();
-      return const rentactivity();
+      return const rentActivity();
     }));
   }
 

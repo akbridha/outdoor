@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         //     child:
         const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: rentactivity(),
+      home: rentActivity(),
       // adminlogin(),
       // Approve(),
       // Wrapper(),
